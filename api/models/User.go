@@ -5,6 +5,5 @@ import (
 )
 
 type User struct {
-	ID  uint32 `gorm:"primary_key;auto_increment" json:"id"`
-	Log int    `gorm:"not null" json:"log"`
+	ID uint32 `gorm:"primary_key;auto_increment" json:"id"`
 }

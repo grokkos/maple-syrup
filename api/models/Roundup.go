@@ -18,6 +18,7 @@ type Roundup struct {
 func (r *Roundup) SaveRoundup(db *gorm.DB) (*Roundup, error) {
 
 	var batch Batch
+	var transaction Transaction
 	var err error
 	err = db.Debug().Model(&Batch{}).Where("dispatched = ?", false).Take(&batch).Error
 	r.RoundupBatchID = batch.ID
@@ -28,7 +29,6 @@ func (r *Roundup) SaveRoundup(db *gorm.DB) (*Roundup, error) {
 		RoundupBatchID: r.RoundupBatchID,
 		RoundupUserID:  r.RoundupUserID,
 	}
-
 	err = db.Debug().Create(&test).Error
 
 	if err != nil {
@@ -50,12 +50,16 @@ func (r *Roundup) SaveRoundup(db *gorm.DB) (*Roundup, error) {
 	}
 	fmt.Println(m)
 	if m > 100 {
-		fmt.Println("Treshold exceed!!!")
+
 		db.Model(&batch).Where("id = ?", batch.ID).Update("summary", m)
 		db.Model(&batch).Where("id = ?", batch.ID).Update("dispatched", true)
 		db.Debug().Model(&batch).Create(&test2)
-	}
-	fmt.Println(batch.Summary)
 
+		test3 := Transaction{
+			TransactionBatchID: r.RoundupBatchID,
+			Amount:             batch.Summary,
+		}
+		db.Debug().Model(&transaction).Create(&test3)
+	}
 	return r, nil
 }
