@@ -35,7 +35,11 @@ func (r *Roundup) SaveRoundup(db *gorm.DB) (*Roundup, error) {
 		return &Roundup{}, err
 	}
 
-	rows, err := db.Model(&Roundup{}).Where("roundup_batch_id = ?", 2).Select("amount").Rows()
+	test2 := Batch{
+		BatchUserID: r.RoundupUserID,
+	}
+
+	rows, err := db.Model(&Roundup{}).Where("roundup_batch_id = ?", r.RoundupBatchID).Select("amount").Rows()
 	defer rows.Close()
 
 	var round Roundup
@@ -48,6 +52,8 @@ func (r *Roundup) SaveRoundup(db *gorm.DB) (*Roundup, error) {
 	if m > 100 {
 		fmt.Println("Treshold exceed!!!")
 		db.Model(&batch).Where("id = ?", batch.ID).Update("summary", m)
+		db.Model(&batch).Where("id = ?", batch.ID).Update("dispatched", true)
+		db.Debug().Model(&batch).Create(&test2)
 	}
 	fmt.Println(batch.Summary)
 
