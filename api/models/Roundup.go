@@ -35,19 +35,21 @@ func (r *Roundup) SaveRoundup(db *gorm.DB) (*Roundup, error) {
 		return &Roundup{}, err
 	}
 
-	rows1, err := db.Model(&Roundup{}).Where("roundup_batch_id = ?", 2).Select("amount").Rows()
-	defer rows1.Close()
+	rows, err := db.Model(&Roundup{}).Where("roundup_batch_id = ?", 2).Select("amount").Rows()
+	defer rows.Close()
 
 	var round Roundup
 	m := 0
-	for rows1.Next() {
-		db.ScanRows(rows1, &round)
+	for rows.Next() {
+		db.ScanRows(rows, &round)
 		m += round.Amount
-
 	}
 	fmt.Println(m)
 	if m > 100 {
 		fmt.Println("Treshold exceed!!!")
+		db.Model(&batch).Where("id = ?", batch.ID).Update("summary", m)
 	}
+	fmt.Println(batch.Summary)
+
 	return r, nil
 }
