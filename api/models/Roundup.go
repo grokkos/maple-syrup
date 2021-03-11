@@ -1,8 +1,6 @@
 package models
 
 import (
-	"fmt"
-
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm"
 )
@@ -48,9 +46,9 @@ func (r *Roundup) SaveRoundup(db *gorm.DB) (*Roundup, error) {
 		db.ScanRows(rows, &round)
 		m += round.Amount
 	}
-	fmt.Println(m)
-	if m > 100 {
+	db.Model(&batch).Where("id = ?", batch.ID).Update("batch_user_id", r.RoundupUserID)
 
+	if m > 100 {
 		db.Model(&batch).Where("id = ?", batch.ID).Update("summary", m)
 		db.Model(&batch).Where("id = ?", batch.ID).Update("dispatched", true)
 		db.Debug().Model(&batch).Create(&test2)
