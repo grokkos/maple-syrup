@@ -56,8 +56,8 @@ func (r *Roundup) SaveRoundup(db *gorm.DB) (*Roundup, error) {
 		db.Debug().Model(&batch).Create(&test2)
 
 		test3 := Transaction{
-			TransactionBatchID: r.RoundupBatchID,
-			Amount:             batch.Summary,
+			TransactionUserID: r.RoundupUserID,
+			Amount:            batch.Summary,
 		}
 		db.Debug().Model(&transaction).Create(&test3)
 	}

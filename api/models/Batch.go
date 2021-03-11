@@ -16,7 +16,7 @@ type Batch struct {
 func (u *Batch) FindAllBatches(db *gorm.DB) (*[]Batch, error) {
 	var err error
 	batches := []Batch{}
-	err = db.Debug().Model(&User{}).Find(&batches).Error
+	err = db.Debug().Model(&Batch{}).Find(&batches).Error
 	if err != nil {
 		return &[]Batch{}, err
 	}

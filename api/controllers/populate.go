@@ -8,17 +8,17 @@ import (
 )
 
 var users = []models.User{
-	{},
-	{},
+	{
+		Name: "Ger",
+	},
+	{
+		Name: "Gergo",
+	},
 }
 var batches = []models.Batch{
 	{
-		Dispatched:  true,
-		BatchUserID: 1,
-	},
-	{
 		Dispatched:  false,
-		BatchUserID: 2,
+		BatchUserID: 1,
 	},
 }
 var roundups = []models.Roundup{
@@ -36,7 +36,7 @@ var roundups = []models.Roundup{
 
 func Load(db *gorm.DB) {
 
-	err := db.Debug().DropTableIfExists(&models.Roundup{}, &models.Transaction{}, &models.Batch{}).Error
+	err := db.Debug().DropTableIfExists(&models.Roundup{}, &models.Transaction{}, &models.Batch{}, &models.User{}).Error
 	if err != nil {
 		log.Fatalf("cannot drop table: %v", err)
 	}
