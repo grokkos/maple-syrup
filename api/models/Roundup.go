@@ -1,10 +1,7 @@
 package models
 
 import (
-	"fmt"
-
 	"github.com/jinzhu/gorm"
-	_ "github.com/jinzhu/gorm"
 )
 
 type Roundup struct {
@@ -18,48 +15,56 @@ type Roundup struct {
 func (r *Roundup) SaveRoundup(db *gorm.DB) (*Roundup, error) {
 
 	var batch Batch
-	var transaction Transaction
 	var err error
 	err = db.Debug().Model(&Batch{}).Where("dispatched = ?", false).Take(&batch).Error
 	r.RoundupBatchID = batch.ID
 
-	test := Roundup{
+	roundup := Roundup{
 		ID:             r.ID,
 		Amount:         r.Amount,
 		RoundupBatchID: r.RoundupBatchID,
 		RoundupUserID:  r.RoundupUserID,
 	}
-	err = db.Debug().Create(&test).Error
+	err = db.Debug().Create(&roundup).Error
 
 	if err != nil {
 		return &Roundup{}, err
 	}
 
-	test2 := Batch{
+	nextbatch := Batch{
 		BatchUserID: r.RoundupUserID,
 	}
 
 	rows, err := db.Model(&Roundup{}).Where("roundup_batch_id = ?", r.RoundupBatchID).Select("amount").Rows()
 	defer rows.Close()
 
-	var round Roundup
 	m := 0
 	for rows.Next() {
-		db.ScanRows(rows, &round)
-		m += round.Amount
+		db.ScanRows(rows, &roundup)
+		m += roundup.Amount
 	}
-	fmt.Println(m)
-	if m > 100 {
+	db.Model(&batch).Where("id = ?", batch.ID).Update("batch_user_id", r.RoundupUserID)
 
+	if m > 100 {
 		db.Model(&batch).Where("id = ?", batch.ID).Update("summary", m)
 		db.Model(&batch).Where("id = ?", batch.ID).Update("dispatched", true)
-		db.Debug().Model(&batch).Create(&test2)
+		db.Debug().Model(&batch).Create(&nextbatch)
 
-		test3 := Transaction{
-			TransactionBatchID: r.RoundupBatchID,
+		nexttransaction := Transaction{
+			TransactionBatchID: batch.ID,
 			Amount:             batch.Summary,
 		}
-		db.Debug().Model(&transaction).Create(&test3)
+		db.Debug().Model(&nexttransaction).Create(&nexttransaction)
 	}
 	return r, nil
+}
+
+func (r *Roundup) FindAllRoundups(db *gorm.DB) (*[]Roundup, error) {
+	var err error
+	roundups := []Roundup{}
+	err = db.Debug().Model(&Roundup{}).Find(&roundups).Error
+	if err != nil {
+		return &[]Roundup{}, err
+	}
+	return &roundups, err
 }
