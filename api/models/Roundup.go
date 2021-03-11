@@ -18,6 +18,7 @@ type Roundup struct {
 func (r *Roundup) SaveRoundup(db *gorm.DB) (*Roundup, error) {
 
 	var batch Batch
+	var transaction Transaction
 	var err error
 	err = db.Debug().Model(&Batch{}).Where("dispatched = ?", false).Take(&batch).Error
 	r.RoundupBatchID = batch.ID
@@ -28,26 +29,37 @@ func (r *Roundup) SaveRoundup(db *gorm.DB) (*Roundup, error) {
 		RoundupBatchID: r.RoundupBatchID,
 		RoundupUserID:  r.RoundupUserID,
 	}
-
 	err = db.Debug().Create(&test).Error
 
 	if err != nil {
 		return &Roundup{}, err
 	}
 
-	rows1, err := db.Model(&Roundup{}).Where("roundup_batch_id = ?", 2).Select("amount").Rows()
-	defer rows1.Close()
+	test2 := Batch{
+		BatchUserID: r.RoundupUserID,
+	}
+
+	rows, err := db.Model(&Roundup{}).Where("roundup_batch_id = ?", r.RoundupBatchID).Select("amount").Rows()
+	defer rows.Close()
 
 	var round Roundup
 	m := 0
-	for rows1.Next() {
-		db.ScanRows(rows1, &round)
+	for rows.Next() {
+		db.ScanRows(rows, &round)
 		m += round.Amount
-
 	}
 	fmt.Println(m)
 	if m > 100 {
-		fmt.Println("Treshold exceed!!!")
+
+		db.Model(&batch).Where("id = ?", batch.ID).Update("summary", m)
+		db.Model(&batch).Where("id = ?", batch.ID).Update("dispatched", true)
+		db.Debug().Model(&batch).Create(&test2)
+
+		test3 := Transaction{
+			TransactionBatchID: r.RoundupBatchID,
+			Amount:             batch.Summary,
+		}
+		db.Debug().Model(&transaction).Create(&test3)
 	}
 	return r, nil
 }

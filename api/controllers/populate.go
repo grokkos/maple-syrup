@@ -8,12 +8,8 @@ import (
 )
 
 var users = []models.User{
-	{
-		Log: 12,
-	},
-	{
-		Log: 23,
-	},
+	{},
+	{},
 }
 var batches = []models.Batch{
 	{
@@ -40,11 +36,11 @@ var roundups = []models.Roundup{
 
 func Load(db *gorm.DB) {
 
-	err := db.Debug().DropTableIfExists(&models.Roundup{}, &models.Batch{}).Error
+	err := db.Debug().DropTableIfExists(&models.Roundup{}, &models.Transaction{}, &models.Batch{}).Error
 	if err != nil {
 		log.Fatalf("cannot drop table: %v", err)
 	}
-	err = db.Debug().AutoMigrate(&models.User{}, &models.Batch{}, &models.Roundup{}).Error
+	err = db.Debug().AutoMigrate(&models.User{}, &models.Batch{}, &models.Transaction{}, &models.Roundup{}).Error
 	if err != nil {
 		log.Fatalf("cannot migrate table: %v", err)
 	}
