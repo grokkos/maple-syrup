@@ -52,6 +52,7 @@ func Load(db *gorm.DB) {
 			log.Fatalf("cannot seed batches table: %v", err)
 		}
 	}
+
 	for i, _ := range batches {
 
 		err = db.Debug().Model(&models.Batch{}).Create(&batches[i]).Error

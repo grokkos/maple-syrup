@@ -1,6 +1,8 @@
 package models
 
-import "github.com/jinzhu/gorm"
+import (
+	"github.com/jinzhu/gorm"
+)
 
 type Transaction struct {
 	ID                uint64 `gorm:"primary_key;auto_increment" json:"id"`
