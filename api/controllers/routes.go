@@ -12,5 +12,4 @@ func (s *Server) initializeRoutes() {
 	s.Router.HandleFunc("/roundups", responses.SetMiddlewareJSON(s.GetRoundups)).Methods("GET")
 	s.Router.HandleFunc("/batches", responses.SetMiddlewareJSON(s.GetAllBatches)).Methods("GET")
 	s.Router.HandleFunc("/transactions", responses.SetMiddlewareJSON(s.GetTransactions)).Methods("GET")
-
 }
