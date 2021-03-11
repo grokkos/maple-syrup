@@ -63,3 +63,13 @@ func (r *Roundup) SaveRoundup(db *gorm.DB) (*Roundup, error) {
 	}
 	return r, nil
 }
+
+func (u *Roundup) FindAllRoundups(db *gorm.DB) (*[]Roundup, error) {
+	var err error
+	roundups := []Roundup{}
+	err = db.Debug().Model(&User{}).Limit(100).Find(&roundups).Error
+	if err != nil {
+		return &[]Roundup{}, err
+	}
+	return &roundups, err
+}

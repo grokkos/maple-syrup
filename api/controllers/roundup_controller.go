@@ -33,3 +33,15 @@ func (server *Server) CreateRoundup(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Location", fmt.Sprintf("%s%s/%d", r.Host, r.RequestURI, roundupCreated.ID))
 	responses.JSON(w, http.StatusCreated, roundupCreated)
 }
+
+func (server *Server) GetRoundups(w http.ResponseWriter, r *http.Request) {
+
+	roundup := models.Roundup{}
+
+	roundups, err := roundup.FindAllRoundups(server.DB)
+	if err != nil {
+		responses.ERROR(w, http.StatusInternalServerError, err)
+		return
+	}
+	responses.JSON(w, http.StatusOK, roundups)
+}
