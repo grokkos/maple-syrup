@@ -6,5 +6,5 @@ import (
 
 func FormatError(err string) error {
 
-	return errors.New("Incorrect Details")
+	return errors.New("Incorrect format")
 }
