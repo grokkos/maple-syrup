@@ -29,14 +29,49 @@
     │   ├── api             # Functionality/features
     │   ├── tests           # Testing endpoints  
     │   └── main            # Run the application
-     
+
+    The database used is PostgreSQL
 
 
 
 ## Integration Guide 
-The database used is PostgreSQL
+
+* A Batch can be either dispatched or un-dispatched
+* A Batch is dispatched if it resulted in a Transaction being sent to the bank.
+* A Batch is un-dispatched if it didn't send a Transaction to the bank
+* There is exactly one un-dispatched Batch at any point of time
+* A Batch contains an accrued amount, with an initial value of 0
+* A User can send low volume amounts to a Batch and the accrued amount of the Batch increases
+* Once the accrued amount of the Batch goes above the threshold of 100, it gets dispatched. The created Transaction has a an amount equal to the accrued  amount of the Batch
+* An history of all Batches, dispatched or un-dispatched must be kept
+
+``
+Step 1
+``
+When the application is firing up, it creates the first undispatched Batch and the User which is attached to
 
 
+``
+Step 2
+``
+Create a new User with only Name and keep the generated id
+
+
+``
+Step 3
+``
+Create a new Roundup with Amount and User id, and will automatically check the Undispatched Batch Summary
+
+
+``
+Step 4
+``
+If the Summary per Batch exceed 100, the Batch is being Dispatched and a Transaction with the Summary is created
+
+
+Step 5
+``
+A new Undispatched Batch with Summary 0 will be created which the next Roundups will be attached to, until the limit exceeds again
 
 ### Use the API
 
