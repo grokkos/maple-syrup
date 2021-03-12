@@ -31,6 +31,7 @@
     │   └── main            # Run the application
 
     The database used is PostgreSQL
+    Dockerize both the app and the tests, simulating production database and testing database
 
 
 
