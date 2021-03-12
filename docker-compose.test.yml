@@ -1,0 +1,36 @@
+version: '3'
+services:
+  app_test:
+    container_name: maple_api_test
+    build:
+      context: .
+      dockerfile: ./Dockerfile.test
+    volumes:
+      - api_test:/app/src/app/
+    depends_on:
+      - maple-postgres-test
+    networks:
+      - maple_test
+
+  maple-postgres-test:
+    image: postgres:latest
+    container_name: maple_db_test
+    environment:
+      - POSTGRES_USER=${TEST_DB_USER}  
+      - POSTGRES_PASSWORD=${TEST_DB_PASSWORD}
+      - POSTGRES_DB=${TEST_DB_NAME}
+      - DATABASE_HOST=${TEST_DB_HOST} 
+    ports:
+      - '5555:5432'
+    volumes:
+      - database_postgres_test:/var/lib/postgresql/data
+    networks:
+      - maple_test
+  
+volumes:
+  api_test:
+  database_postgres_test:
+
+networks:
+  maple_test:
+    driver: bridge
