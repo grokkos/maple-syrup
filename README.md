@@ -3,7 +3,7 @@
   <a href="https://github.com/gerokkos/clerk">
     <img src="https://i.ibb.co/pZvbmrs/901de892-68c5-44a2-9810-2dc6b9498931-200x200.png" alt="Logo" width="80" height="80">
   </a>
-  <h3 align="center">Clerk Randomuser API</h3>
+  <h3 align="center">Maple Syrup API</h3>
 </p>
 
 # Table of Contents
@@ -25,7 +25,7 @@
 # Project Structure
 
 
-    ├── Clerk                    
+    ├── Maple Syrup                    
     │   ├── api             # Functionality/features
     │   ├── tests           # Testing endpoints  
     │   └── main            # Run the application
@@ -42,13 +42,14 @@ The database used is PostgreSQL
 
 | Endpoint         |                              |   
 | -------------    | -----------------------------|
-| /populate        |                              |
-| /clerks          | ?limit=<>                    |
-| /clerks          | ?starting_after=<>           |
-| /clerks          | ?ending_before=<>            |
-| /clerks          | ?starting_after=<>&limit=<>  |
-| /clerks          | ?starting_after=<>&limit=<>  |
-| /clerks          | ?email=""                    |
+| /user            | POST                         |
+| /roundup         | POST                         |
+| /users           | GET                          |
+| /batchlist       | GET ?id="userid"             |
+| /roundups        | GET                          |
+| /batches         | GET                          |
+| /transactions    | GET                          |
+
 
 
 
@@ -56,7 +57,7 @@ The database used is PostgreSQL
 ### Clone the Application
 
 ``
-git clone git@github.com:gerokkos/clerk.git
+git clone github.com/grokkos/maple-syrup.git
 ``
 
 
@@ -83,41 +84,6 @@ Run the tests with Docker:
 ``
 docker-compose -f docker-compose.test.yml up --build --abort-on-container-exit
 ``
-
-
-
-
-To use the pgAdmin:
-
-
-http://localhost:5050
-
-
-i. Choose Create, then Server
-
-
-ii. Fill in any name that you want.
-
-
-iii. Click on connection tab.
-
-
-
-Run:
-``
-docker container ls
-``
-
-
-Copy the ID of the clerk-db-postgres and use it here:
-
-
-``
-docker inspect <container_id> | grep IPAddress
-``
-
-
-The IPAddress, is the host name in pgAdmin and username-password the ones in the .env
 
 
 
