@@ -8,7 +8,6 @@
 
 # Table of Contents
 
-* [Getting Started](#getting-started)
 * [Project Structure](#project-structure)
 * [Integration Guide ](#integration-guid)
 * [Use the API](#use-the-api)
