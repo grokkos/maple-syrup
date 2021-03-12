@@ -8,7 +8,6 @@ import (
 
 	"github.com/grokkos/maple-syrup/api/controllers"
 	"github.com/grokkos/maple-syrup/api/models"
-	"github.com/jinzhu/gorm"
 	"github.com/joho/godotenv"
 )
 
@@ -21,7 +20,6 @@ func TestMain(m *testing.M) {
 		log.Fatalf("Error obtaining .env %v\n", err)
 	}
 	Database()
-
 	os.Exit(m.Run())
 
 }
@@ -29,14 +27,12 @@ func TestMain(m *testing.M) {
 func Database() {
 
 	var err error
-	TestDbDriver := os.Getenv("TestDbDriver")
-	DBURL := fmt.Sprintf("host=%s port=%s user=%s dbname=%s sslmode=disable password=%s", os.Getenv("TestDbHost"), os.Getenv("TestDbPort"), os.Getenv("TestDbUser"), os.Getenv("TestDbName"), os.Getenv("TestDbPassword"))
-	server.DB, err = gorm.Open(TestDbDriver, DBURL)
+	server.Initialize(os.Getenv("TEST_DB_DRIVER"), os.Getenv("TEST_DB_USER"), os.Getenv("TEST_DB_PASSWORD"), os.Getenv("TEST_DB_PORT"), os.Getenv("TEST_DB_HOST"), os.Getenv("TEST_DB_NAME"))
+
 	if err != nil {
-		fmt.Printf("Cannot connect to %s database\n", TestDbDriver)
 		log.Fatal("This is the log:", err)
 	} else {
-		fmt.Printf("We are connected to the %s database\n", TestDbDriver)
+		fmt.Printf("We are connected to the database")
 	}
 }
 
