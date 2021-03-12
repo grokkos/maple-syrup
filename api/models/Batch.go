@@ -27,6 +27,7 @@ func (u *Batch) FindAllBatches(db *gorm.DB) (*[]Batch, error) {
 	return &batches, err
 }
 
+//getting all the batches filtered by user id
 func (u *Batch) FindBatchesByUserId(db *gorm.DB, uid uint32) (*[]Batch, error) {
 	var err error
 	batches := []Batch{}

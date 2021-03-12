@@ -21,7 +21,6 @@ func TestMain(m *testing.M) {
 	}
 	Database()
 	os.Exit(m.Run())
-
 }
 
 func Database() {
@@ -36,7 +35,7 @@ func Database() {
 	}
 }
 
-func refreshTables() error {
+func refreshTables() error { //refreshing the tables before the tests
 	err := server.DB.Debug().DropTableIfExists(&models.Roundup{}, &models.Transaction{}, &models.Batch{}, &models.User{}).Error
 	if err != nil {
 		return err
@@ -50,7 +49,7 @@ func refreshTables() error {
 	return nil
 }
 
-func populateTables() error {
+func populateTables() error { //seeding the tables with data to assert in the tests
 	users := []models.User{
 		models.User{
 			Name: "Tina",
@@ -66,7 +65,6 @@ func populateTables() error {
 			return err
 		}
 	}
-
 	log.Printf("populate users table successfully")
 
 	batches := []models.Batch{
@@ -75,14 +73,12 @@ func populateTables() error {
 			BatchUserID: 1,
 		},
 	}
-
 	for i := range batches {
 		err := server.DB.Debug().Model(&models.Batch{}).Create(&batches[i]).Error
 		if err != nil {
 			return err
 		}
 	}
-
 	log.Printf("populate users table successfully")
 
 	roundups := []models.Roundup{
@@ -97,7 +93,6 @@ func populateTables() error {
 			RoundupUserID:  2,
 		},
 	}
-
 	for i := range roundups {
 		err := server.DB.Debug().Model(&models.Roundup{}).Create(&roundups[i]).Error
 		if err != nil {

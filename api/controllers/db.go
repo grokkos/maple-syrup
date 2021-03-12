@@ -16,15 +16,13 @@ type Server struct {
 	Router *mux.Router
 }
 
-var users = []models.User{
-	{
-		Name: "Ger",
-	},
+//creating the initial user and attach the first undispatched batch created when we run the app
+var users = models.User{
+	Name: "InitialUser",
 }
-var batches = []models.Batch{
-	{
-		BatchUserID: 1,
-	},
+
+var batches = models.Batch{
+	BatchUserID: 1,
 }
 
 func (server *Server) Initialize(Dbdriver, DbUser, DbPassword, DbPort, DbHost, DbName string) {
@@ -58,12 +56,12 @@ func Load(db *gorm.DB) {
 		log.Fatalf("cannot migrate table: %v", err)
 	}
 
-	err = db.Debug().Model(&models.User{}).Create(&users[0]).Error
+	err = db.Debug().Model(&models.User{}).Create(&users).Error
 	if err != nil {
-		log.Fatalf("cannot seed batches table: %v", err)
+		log.Fatalf("cannot seed users table: %v", err)
 	}
 
-	err = db.Debug().Model(&models.Batch{}).Create(&batches[0]).Error
+	err = db.Debug().Model(&models.Batch{}).Create(&batches).Error
 	if err != nil {
 		log.Fatalf("cannot seed batches table: %v", err)
 	}
