@@ -68,7 +68,7 @@ Step 4
 ``
 If the Summary per Batch exceed 100, the Batch is being Dispatched and a Transaction with the Summary is created
 
-
+``
 Step 5
 ``
 A new Undispatched Batch with Summary 0 will be created which the next Roundups will be attached to, until the limit exceeds again
