@@ -27,14 +27,14 @@ func (server *Server) GetBatchesByUser(w http.ResponseWriter, r *http.Request) {
 		fmt.Print("Fail to parse!")
 	}
 
-	filter := new(models.Filter)
+	filter := new(models.Filter) //filter struct to parse the user id value
 	if err := schema.NewDecoder().Decode(filter, r.Form); err != nil {
 		fmt.Print("Fail to decode!")
 	}
 
 	fmt.Printf("%+v", filter)
 	batch := models.Batch{}
-	batches, err := batch.FindBatchesByUserId(server.DB, uint32(filter.ID))
+	batches, err := batch.FindBatchesByUserId(server.DB, uint32(filter.UserID))
 	if err != nil {
 		responses.ERROR(w, http.StatusBadRequest, err)
 		return

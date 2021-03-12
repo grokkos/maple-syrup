@@ -9,10 +9,9 @@ type Batch struct {
 	Dispatched  bool   `gorm:"default:false"`
 	Summary     int    `gorm:"not null" json:"summary"`
 	BatchUserID uint32 `sql:"type:int REFERENCES users(id)" json:"batch_user_id"`
-	BatchUser   User   `json:"batch_user"`
 }
 type Filter struct {
-	ID int64 `schema:"id"`
+	UserID int64 `schema:"userid"`
 }
 
 var batch Batch

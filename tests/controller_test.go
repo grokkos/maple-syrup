@@ -267,7 +267,7 @@ func TestGetBatchesByUserId(t *testing.T) {
 		handler.ServeHTTP(rr, req)
 	}
 
-	req, err := http.NewRequest("GET", "/batchlist?id=1", nil)
+	req, err := http.NewRequest("GET", "/batches?userid=1", nil)
 	if err != nil {
 		t.Errorf("this is the error: %v\n", err)
 	}

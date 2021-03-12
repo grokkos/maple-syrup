@@ -9,7 +9,6 @@ type Roundup struct {
 	Amount         int    `gorm:"not null" json:"amount"`
 	RoundupBatchID uint32 `sql:"type:int REFERENCES batches(id)" json:"roundup_batch_id"`
 	RoundupUserID  uint32 `sql:"type:int REFERENCES users(id)" json:"roundup_user_id"`
-	RoundupUser    User   `json:"roundup_user"`
 }
 
 func (r *Roundup) SaveRoundup(db *gorm.DB) (*Roundup, error) {
