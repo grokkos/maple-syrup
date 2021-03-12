@@ -66,12 +66,20 @@ Create a new Roundup with Amount and User id, and will automatically check the U
 ``
 Step 4
 ``
-If the Summary per Batch exceed 100, the Batch is being Dispatched and a Transaction with the Summary is created
+If the Summary per Batch exceed 100, the Batch is being Dispatched and a Transaction with the Summary and the Batch id, is created
+
 
 ``
 Step 5
 ``
 A new Undispatched Batch with Summary 0 will be created which the next Roundups will be attached to, until the limit exceeds again
+
+
+``
+Step 6
+``
+The batchlist endpoint can be used to filter all the Batches per User related, with the parameter ?id
+
 
 ### Use the API
 
