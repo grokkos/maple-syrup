@@ -79,19 +79,19 @@ A new Undispatched Batch with Summary 0 will be created which the next Roundups 
 ``
 Step 6
 ``
-The batchlist endpoint can be used to filter all the Batches per User related, with the parameter ?id
+The /batches?userid endpoint can be used to filter all the Batches per User related, with the parameter userid
 
 
 ### Use the API
 
 | Endpoint         |                              |   
 | -------------    | -----------------------------|
-| /user            | POST                         |
-| /roundup         | POST                         |
+| /users           | POST                         |
 | /users           | GET                          |
-| /batchlist       | GET ?id="userid"             |
+| /roundups        | POST                         |
 | /roundups        | GET                          |
 | /batches         | GET                          |
+| /batches         | GET ?userid=userid           |
 | /transactions    | GET                          |
 
 

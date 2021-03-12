@@ -12,7 +12,7 @@ type Batch struct {
 	BatchUser   User   `json:"batch_user"`
 }
 type Filter struct {
-	ID int64 `schema:"id"`
+	UserID int64 `schema:"userid"`
 }
 
 var batch Batch
