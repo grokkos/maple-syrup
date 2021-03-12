@@ -16,6 +16,7 @@
 * [Run with Docker](#run-with-docker)
 * [Run the Application Locally](#run-the-application-locally)
 * [Clean tests cache if cached](#clean-tests-cache-if-cached)
+* [Concurrent Requests](#concurrent-requests)
 * [Contributing](#contributing)
 
 
@@ -31,7 +32,6 @@
     │   └── main            # Run the application
 
     The database used is PostgreSQL
-    Dockerize both the app and the tests, simulating production database and testing database
 
 
 
@@ -67,19 +67,12 @@ Create a new Roundup with Amount and User id, and will automatically check the U
 ``
 Step 4
 ``
-If the Summary per Batch exceed 100, the Batch is being Dispatched and a Transaction with the Summary and the Batch id, is created
+If the Summary per Batch exceed 100, the Batch is being Dispatched and a Transaction with the Summary is created
 
 
-``
 Step 5
 ``
 A new Undispatched Batch with Summary 0 will be created which the next Roundups will be attached to, until the limit exceeds again
-
-
-``
-Step 6
-``
-The batchlist endpoint can be used to filter all the Batches per User related, with the parameter ?id
 
 
 ### Use the API
@@ -147,6 +140,15 @@ go run main.go
 go clean -testcache
 ``
 
+### Concurrent requests
+
+
+``
+ab - Apache HTTP server benchmarking tool is used 
+``
+<p align="center">
+    <img src="https://i.ibb.co/jv2f0pL/ab.png" alt="ab" border="0"></a>
+</p>
 
 ## Contributing
 
