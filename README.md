@@ -31,7 +31,7 @@
     │   └── main            # Run the application
 
     The database used is PostgreSQL
-    Dockerize both the app and the tests, simulating production database and testing database
+    Dockerize individually the app and the tests, simulating production database and testing database
 
 
 
@@ -82,30 +82,33 @@ Step 6
 The /batches?userid endpoint can be used to filter all the Batches per User related, with the parameter userid
 
 
-### Use the API
+## Use the API
 
 | Endpoint         |                              |   
 | -------------    | -----------------------------|
 | /users           | POST                         |
 | /users           | GET                          |
+|                  |                              |
 | /roundups        | POST                         |
 | /roundups        | GET                          |
+|                  |                              |
 | /batches         | GET                          |
 | /batches         | GET ?userid=userid           |
+|                  |                              |
 | /transactions    | GET                          |
 
 
 
 
 
-### Clone the Application
+## Clone the Application
 
 ``
 git clone github.com/grokkos/maple-syrup.git
 ``
 
 
-### Run with Docker
+## Run with Docker
 
 Start up the application services by running:
 
@@ -132,7 +135,7 @@ docker-compose -f docker-compose.test.yml up --build --abort-on-container-exit
 
 
 
-### Run the Application Locally
+## Run the Application Locally
 
 
 ``
@@ -140,22 +143,20 @@ go run main.go
 ``
 
 
-### Clean tests cache if cached
+## Clean tests cache if cached
 
 
 ``
 go clean -testcache
 ``
 
-### Concurrent requests
+## Concurrent requests
 
 
 ``
 ab - Apache HTTP server benchmarking tool is used 
 ``
-<p align="center">
-    <img src="https://i.ibb.co/jv2f0pL/ab.png" alt="ab" border="0"></a>
-</p>
+WIP
 
 
 ## Contributing
