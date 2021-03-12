@@ -17,9 +17,9 @@ func (r *Roundup) SaveRoundup(db *gorm.DB) (*Roundup, error) {
 	var batch Batch
 	var err error
 	err = db.Debug().Model(&Batch{}).Where("dispatched = ?", false).Take(&batch).Error
-	r.RoundupBatchID = batch.ID
+	r.RoundupBatchID = batch.ID //when creating the roundup fetch the existing batch id which is not dispatched yet
 
-	roundup := Roundup{
+	roundup := Roundup{ //define the roundup to be saved with the fetched batch id
 		ID:             r.ID,
 		Amount:         r.Amount,
 		RoundupBatchID: r.RoundupBatchID,
@@ -31,26 +31,26 @@ func (r *Roundup) SaveRoundup(db *gorm.DB) (*Roundup, error) {
 		return &Roundup{}, err
 	}
 
-	nextbatch := Batch{
+	nextbatch := Batch{ //set the user id for the generated batch
 		BatchUserID: r.RoundupUserID,
 	}
 
-	rows, err := db.Model(&Roundup{}).Where("roundup_batch_id = ?", r.RoundupBatchID).Select("amount").Rows()
+	rows, err := db.Model(&Roundup{}).Where("roundup_batch_id = ?", r.RoundupBatchID).Select("amount").Rows() //calculate the summary by batch id
 	defer rows.Close()
 
-	m := 0
+	sum := 0
 	for rows.Next() {
 		db.ScanRows(rows, &roundup)
-		m += roundup.Amount
+		sum += roundup.Amount
 	}
-	db.Model(&batch).Where("id = ?", batch.ID).Update("batch_user_id", r.RoundupUserID)
+	db.Model(&batch).Where("id = ?", batch.ID).Update("batch_user_id", r.RoundupUserID) //fetching the correct user id to the batch
 
-	if m > 100 {
-		db.Model(&batch).Where("id = ?", batch.ID).Update("summary", m)
-		db.Model(&batch).Where("id = ?", batch.ID).Update("dispatched", true)
+	if sum > 100 {
+		db.Model(&batch).Where("id = ?", batch.ID).Update("summary", sum)     //storing the sum only when it exceeds the threshold
+		db.Model(&batch).Where("id = ?", batch.ID).Update("dispatched", true) //update the dispatched to trues
 		db.Debug().Model(&batch).Create(&nextbatch)
 
-		nexttransaction := Transaction{
+		nexttransaction := Transaction{ //generate the transaction with the summary of amounts that is dispatched and the batch id
 			TransactionBatchID: batch.ID,
 			Amount:             batch.Summary,
 		}
