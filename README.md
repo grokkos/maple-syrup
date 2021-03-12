@@ -16,6 +16,7 @@
 * [Run with Docker](#run-with-docker)
 * [Run the Application Locally](#run-the-application-locally)
 * [Clean tests cache if cached](#clean-tests-cache-if-cached)
+* [Concurrent Requests](#concurrent-requests)
 * [Contributing](#contributing)
 
 
@@ -146,6 +147,16 @@ go run main.go
 ``
 go clean -testcache
 ``
+
+### Concurrent requests
+
+
+``
+ab - Apache HTTP server benchmarking tool is used 
+``
+<p align="center">
+    <img src="https://i.ibb.co/jv2f0pL/ab.png" alt="ab" border="0"></a>
+</p>
 
 
 ## Contributing
